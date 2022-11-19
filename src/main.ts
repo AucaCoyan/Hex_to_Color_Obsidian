@@ -8,6 +8,7 @@ import {
 	PluginSettingTab,
 	Setting,
 } from "obsidian";
+import { DocumentHighlight } from "./color-highlight";
 
 interface HexToColorSettings {
 	mySetting: string;
@@ -21,23 +22,30 @@ export default class HexToColor extends Plugin {
 	settings: HexToColorSettings;
 
 	async onload() {
+		// list of instances
+		let instanceMap = [];
+
 		await this.loadSettings();
 
 		// This creates an icon in the left ribbon.
 		const ribbonIconEl = this.addRibbonIcon(
-			"dice",
+			"highlighter",
 			"Hex To Color",
 			(evt: MouseEvent) => {
 				// Called when the user clicks the icon.
-				new Notice("This is a notice!");
+				new Notice("You clicked the button!");
 			}
 		);
 		// Perform additional things with the ribbon
 		ribbonIconEl.addClass("my-plugin-ribbon-class");
 
+		// create an instance
+		const instance = new DocumentHighlight();
+		instanceMap.push(instance);
+
 		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText("Hex to color is ACTIVE!");
+		statusBarItemEl.setText("Hex to color is ACTIVE");
 
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
